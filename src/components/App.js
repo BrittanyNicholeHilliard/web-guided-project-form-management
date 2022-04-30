@@ -17,7 +17,7 @@ export default function App() {
 
   // 🔥 STEP 1 - WE NEED STATE TO HOLD ALL VALUES OF THE FORM!
   const [formValues, setFormValues] = useState(initialFormValues); // fix this using the state hook
-  const [formError, setFormError] = userState(null);
+  const [formError, setFormError] = useState(null);
 
   const updateForm = (inputName, inputValue) => {
     // 🔥 STEP 8 - IMPLEMENT a "form state updater" which will be used inside the inputs' `onChange` handler
@@ -37,6 +37,9 @@ export default function App() {
       role: formValues.role
     }
 
+    if (!newFriend.username || !newFriend.email || !newFriend.role){
+    setFormError("Are you Kidding me? This is the simplest form in the world but, get it together."); }
+
       axios.post("fakeapi.com", newFriend)
     .then(res => {
       setFriends([ res.data, ...friends ]); /// akin to concat, creating new array <-
@@ -44,7 +47,7 @@ export default function App() {
     }).catch(err => console.error(err))
   }
 
-  if (!newFriend.username ||!newFriend.email || !newFriend.role) return;
+
 
   useEffect(() => {
     axios.get('fakeapi.com').then(res => setFriends(res.data))
@@ -53,6 +56,7 @@ export default function App() {
   return (
     <div className='container'>
       <h1>Form App</h1>
+      { formError && <h2 className="error-text">{formError}</h2> }
 
       <FriendForm
         // 🔥 STEP 2 - The form component needs its props.
